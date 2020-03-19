@@ -4,27 +4,53 @@ use {
     std::io::*,
 };
 
-fn int() -> i64 {
-    rand::thread_rng().gen_range(10, 50)
-}
-
 struct QA {
     question: String,
     answer: i64,
 }
 impl QA {
     fn new() -> Self {
-        let (a, b) = (int(), int());
-        Self {
-            question: format!("{} + {}", a, b),
-            answer: a + b,
+        let mut rng = rand::thread_rng();
+        match rng.gen_range(0, 5) {
+            0 => {
+                // halving
+                let a = rng.gen_range(3, 20);
+                Self {
+                    question: format!("{} / 2", a*2),
+                    answer: a,
+                }
+            }
+            1 => {
+                // substraction (result may be negative)
+                let (a, b) = (rng.gen_range(1, 30), rng.gen_range(1, 20));
+                Self {
+                    question: format!("{} - {}", a, b),
+                    answer: a - b,
+                }
+            }
+            2 => {
+                // multiplication
+                let (a, b) = (rng.gen_range(2, 6), rng.gen_range(1, 10));
+                Self {
+                    question: format!("{} x {}", a, b),
+                    answer: a * b,
+                }
+            }
+            _ => {
+                // addition
+                let (a, b) = (rng.gen_range(1, 50), rng.gen_range(1, 50));
+                Self {
+                    question: format!("{} + {}", a, b),
+                    answer: a + b,
+                }
+            }
         }
     }
 }
 
 fn main() {
     let stdin = stdin();
-    let mut input = stdin.lock().lines().map(|l| l.unwrap());
+    let mut input = stdin.lock().lines().flatten();
     let (mut good, mut bad) = (0, 0);
     loop {
         let qa = QA::new();
@@ -35,7 +61,7 @@ fn main() {
                     println!("{}", "Right!".green());
                     good += 1;
                 } else {
-                    println!("{}", "Wrong".red());
+                    println!("{} {} = {}", "Wrong!".red(), qa.question, qa.answer);
                     bad += 1;
                 }
             }
