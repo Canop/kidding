@@ -1,7 +1,10 @@
 use {
     crossterm::style::Colorize,
     rand::Rng,
-    std::io::*,
+    std::{
+        fmt::Write,
+        io::*,
+    },
 };
 
 struct QA {
@@ -11,10 +14,10 @@ struct QA {
 impl QA {
     fn new() -> Self {
         let mut rng = rand::thread_rng();
-        match rng.gen_range(0, 5) {
+        match rng.gen_range(0, 6) {
             0 => {
                 // halving
-                let a = rng.gen_range(3, 20);
+                let a = rng.gen_range(4, 25);
                 Self {
                     question: format!("{} / 2", a*2),
                     answer: a,
@@ -22,7 +25,7 @@ impl QA {
             }
             1 => {
                 // substraction (result may be negative)
-                let (a, b) = (rng.gen_range(1, 30), rng.gen_range(1, 20));
+                let (a, b) = (rng.gen_range(1, 40), rng.gen_range(1, 30));
                 Self {
                     question: format!("{} - {}", a, b),
                     answer: a - b,
@@ -30,15 +33,34 @@ impl QA {
             }
             2 => {
                 // multiplication
-                let (a, b) = (rng.gen_range(2, 6), rng.gen_range(1, 10));
+                let (a, b) = (rng.gen_range(2, 7), rng.gen_range(2, 10));
                 Self {
                     question: format!("{} x {}", a, b),
                     answer: a * b,
                 }
             }
+            3 => {
+                // multiple small additions and substractions
+                let mut answer = rng.gen_range(1, 21);
+                let mut question = format!("{}", answer);
+                for _ in 0..rng.gen_range(2, 5) {
+                    let a = rng.gen_range(1, 12);
+                    if rng.gen_bool(0.7) {
+                        answer += a;
+                        write!(&mut question, " + {}", a).unwrap();
+                    } else {
+                        answer -= a;
+                        write!(&mut question, " - {}", a).unwrap();
+                    }
+                }
+                Self {
+                    question,
+                    answer,
+                }
+            }
             _ => {
                 // addition
-                let (a, b) = (rng.gen_range(1, 50), rng.gen_range(1, 50));
+                let (a, b) = (rng.gen_range(1, 70), rng.gen_range(1, 60));
                 Self {
                     question: format!("{} + {}", a, b),
                     answer: a + b,
