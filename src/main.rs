@@ -17,7 +17,7 @@ impl QA {
         match rng.gen_range(0, 6) {
             0 => {
                 // halving
-                let a = rng.gen_range(4, 25);
+                let a = rng.gen_range(4, 35);
                 Self {
                     question: format!("{} / 2", a*2),
                     answer: a,
@@ -33,7 +33,7 @@ impl QA {
             }
             2 => {
                 // multiplication
-                let (a, b) = (rng.gen_range(2, 7), rng.gen_range(2, 10));
+                let (a, b) = (rng.gen_range(2, 8), rng.gen_range(2, 11));
                 Self {
                     question: format!("{} x {}", a, b),
                     answer: a * b,
@@ -43,8 +43,8 @@ impl QA {
                 // multiple small additions and substractions
                 let mut answer = rng.gen_range(1, 21);
                 let mut question = format!("{}", answer);
-                for _ in 0..rng.gen_range(2, 5) {
-                    let a = rng.gen_range(1, 12);
+                for _ in 0..rng.gen_range(2, 6) {
+                    let a = rng.gen_range(1, 14);
                     if rng.gen_bool(0.7) {
                         answer += a;
                         write!(&mut question, " + {}", a).unwrap();
@@ -60,7 +60,7 @@ impl QA {
             }
             _ => {
                 // addition
-                let (a, b) = (rng.gen_range(1, 70), rng.gen_range(1, 60));
+                let (a, b) = (rng.gen_range(1, 120), rng.gen_range(1, 80));
                 Self {
                     question: format!("{} + {}", a, b),
                     answer: a + b,
