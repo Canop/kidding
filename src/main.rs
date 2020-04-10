@@ -14,10 +14,10 @@ struct QA {
 impl QA {
     fn new() -> Self {
         let mut rng = rand::thread_rng();
-        match rng.gen_range(0, 6) {
+        match rng.gen_range(0, 7) {
             0 => {
                 // halving
-                let a = rng.gen_range(4, 35);
+                let a = rng.gen_range(4, 60);
                 Self {
                     question: format!("{} / 2", a*2),
                     answer: a,
@@ -33,7 +33,7 @@ impl QA {
             }
             2 => {
                 // multiplication
-                let (a, b) = (rng.gen_range(2, 8), rng.gen_range(2, 11));
+                let (a, b) = (rng.gen_range(2, 9), rng.gen_range(2, 12));
                 Self {
                     question: format!("{} x {}", a, b),
                     answer: a * b,
@@ -44,7 +44,7 @@ impl QA {
                 let mut answer = rng.gen_range(1, 21);
                 let mut question = format!("{}", answer);
                 for _ in 0..rng.gen_range(2, 6) {
-                    let a = rng.gen_range(1, 14);
+                    let a = rng.gen_range(1, 17);
                     if rng.gen_bool(0.7) {
                         answer += a;
                         write!(&mut question, " + {}", a).unwrap();
@@ -56,6 +56,15 @@ impl QA {
                 Self {
                     question,
                     answer,
+                }
+            }
+            4 => {
+                // addition of two big numbers
+                let a = rng.gen_range(20, 60) * rng.gen_range(25, 55) * rng.gen_range(2, 15);
+                let b = rng.gen_range(25, 50) * rng.gen_range(15, 65) * rng.gen_range(2, 10);
+                Self {
+                    question: format!("{} + {}", a, b),
+                    answer: a + b,
                 }
             }
             _ => {
