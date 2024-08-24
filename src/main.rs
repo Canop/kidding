@@ -135,7 +135,6 @@ fn main() {
                         if successive_good >= min_successive_good {
                             let percent = 100 * good / (good + bad);
                             let won = percent >= goal_percent;
-                            println!("{} réussites sur {} : {}%", good, good + bad, percent);
                             match LANG {
                                 Lang::Fr => {
                                     println!(
